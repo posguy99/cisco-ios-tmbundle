@@ -311,18 +311,13 @@
 			<array>
 				<dict>
 					<key>begin</key>
-					<string>^(access-list)\s(\d+)(?=\s)</string>
+					<string>^(access-list)(?=\s)</string>
 					<key>beginCaptures</key>
 					<dict>
 						<key>1</key>
 						<dict>
 							<key>name</key>
 							<string>constant.language.cisco</string>
-						</dict>
-						<key>2</key>
-						<dict>
-							<key>name</key>
-							<string>entity.character.sequence.cisco</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -331,7 +326,7 @@
 					<array>
 						<dict>
 							<key>match</key>
-							<string>(permit|deny|udp|tcp|icmp|ip|eq|any|range|host)\s</string>
+							<string>(compiled|permit|deny|udp|tcp|icmp|ip|eq|any|range|host)\s</string>
 							<key>name</key>
 							<string>keyword.other.acl</string>
 						</dict>
@@ -1159,15 +1154,7 @@
 						</dict>
 					</dict>
 					<key>end</key>
-					<string>^(!)</string>
-					<key>endCaptures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>comment.documentation.cisco</string>
-						</dict>
-					</dict>
+					<string>^(?=\w)</string>
 					<key>patterns</key>
 					<array>
 						<dict>
