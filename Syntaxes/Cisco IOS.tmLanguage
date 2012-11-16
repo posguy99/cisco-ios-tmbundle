@@ -42,7 +42,7 @@
 		</dict>
 		<dict>
 			<key>include</key>
-			<string>#dhcp_pool</string>
+			<string>#dhcp</string>
 		</dict>
 		<dict>
 			<key>include</key>
@@ -158,6 +158,10 @@
 		</dict>
 		<dict>
 			<key>include</key>
+			<string>#router</string>
+		</dict>
+		<dict>
+			<key>include</key>
 			<string>#global_ip</string>
 		</dict>
 		<dict>
@@ -194,11 +198,11 @@
 		</dict>
 		<dict>
 			<key>include</key>
-			<string>#interface</string>
+			<string>#controller</string>
 		</dict>
 		<dict>
 			<key>include</key>
-			<string>#router</string>
+			<string>#interface</string>
 		</dict>
 		<dict>
 			<key>include</key>
@@ -490,6 +494,55 @@
 				</dict>
 			</array>
 		</dict>
+		<key>controller</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>begin</key>
+					<string>^(controller)(?=\s)</string>
+					<key>beginCaptures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>constant.language.cisco</string>
+						</dict>
+					</dict>
+					<key>end</key>
+					<string>^(!)</string>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>match</key>
+							<string>\s(framing|linecode|channel-group|timeslots|)(?=\s)</string>
+							<key>name</key>
+							<string>keyword.other.interface</string>
+						</dict>
+						<dict>
+							<key>include</key>
+							<string>#ipv6_address</string>
+						</dict>
+						<dict>
+							<key>include</key>
+							<string>#ip_address</string>
+						</dict>
+						<dict>
+							<key>include</key>
+							<string>#interface_types</string>
+						</dict>
+						<dict>
+							<key>include</key>
+							<string>#disable</string>
+						</dict>
+						<dict>
+							<key>include</key>
+							<string>#description</string>
+						</dict>
+					</array>
+				</dict>
+			</array>
+		</dict>
 		<key>crypto_dynmap</key>
 		<dict>
 			<key>patterns</key>
@@ -551,7 +604,7 @@
 						</dict>
 					</dict>
 					<key>end</key>
-					<string>^(!)</string>
+					<string>^(?=\w|!)</string>
 					<key>endCaptures</key>
 					<dict>
 						<key>1</key>
@@ -637,12 +690,12 @@
 						</dict>
 					</dict>
 					<key>end</key>
-					<string>$</string>
+					<string>^(?=\w|!)</string>
 					<key>patterns</key>
 					<array>
 						<dict>
 							<key>match</key>
-							<string>\s(local-address|client|authentication|configuration|isakmp|authorization|ipsec-isakmp|dynamic|address|list|match)(?=\s)</string>
+							<string>\s(set|peer|transform-set|pfs|local-address|client|authentication|configuration|isakmp|authorization|ipsec-isakmp|dynamic|address|list|match)(?=\s)</string>
 							<key>name</key>
 							<string>keyword.other.crypto</string>
 						</dict>
@@ -719,41 +772,33 @@
 				</dict>
 			</array>
 		</dict>
-		<key>dhcp_pool</key>
+		<key>dhcp</key>
 		<dict>
 			<key>patterns</key>
 			<array>
 				<dict>
 					<key>begin</key>
-					<string>^(ip )(dhcp pool)\s</string>
+					<string>^((ip|ipv6)\s)(dhcp)\s</string>
 					<key>beginCaptures</key>
 					<dict>
-						<key>1</key>
+						<key>2</key>
 						<dict>
 							<key>name</key>
 							<string>constant.language.cisco</string>
 						</dict>
-						<key>2</key>
+						<key>3</key>
 						<dict>
 							<key>name</key>
 							<string>keyword.other.dhcp</string>
 						</dict>
 					</dict>
 					<key>end</key>
-					<string>^(!)</string>
-					<key>endCaptures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>comment.documentation.cisco</string>
-						</dict>
-					</dict>
+					<string>^(?=\w|!)</string>
 					<key>patterns</key>
 					<array>
 						<dict>
 							<key>match</key>
-							<string>(network|dns-server|default-router|option|ip)\s</string>
+							<string>(pool|database|address|prefix|domain-name|lease|ascii|network|dns-server|default-router|option|ip)\s</string>
 							<key>name</key>
 							<string>keyword.other.dhcp</string>
 						</dict>
@@ -992,7 +1037,7 @@
 					<array>
 						<dict>
 							<key>match</key>
-							<string>\s(forward-protocol|bootp|lookup|multicast|hardware-switching|replication-mode|icmp|rate-limit|unreachable|authentication|timeout-policy|idle|life|local|pool|dhcp|excluded-address|use|connected|pim|rp-address|multicast-routing|source-route|vrf|cef|name-server|domain|name|telnet|source-interface|standard|extended|http|server|secure-server|route|subnet-zero|classless)(?=\s)</string>
+							<string>\s(forward-protocol|host|bootp|lookup|multicast|hardware-switching|replication-mode|icmp|rate-limit|unreachable|authentication|timeout-policy|idle|life|local|pool|dhcp|excluded-address|use|connected|pim|rp-address|multicast-routing|source-route|vrf|cef|name-server|domain|name|telnet|source-interface|standard|extended|http|server|secure-server|route|subnet-zero|classless)(?=\s)</string>
 							<key>name</key>
 							<string>keyword.other.ip</string>
 						</dict>
@@ -1034,7 +1079,7 @@
 					<array>
 						<dict>
 							<key>match</key>
-							<string>\s(rpf|use-bgp|multicast|hardware-switching|replication-mode|pim|rp-address|unicast-routing|multicast-routing|vrf|cef|name-server|domain|name|telnet|source-interface|prefix-list|access-list|standard|extended|http|server|secure-server|route)(?=\s)</string>
+							<string>\s(rpf|use-bgp|multicast|general-prefix|hardware-switching|replication-mode|pim|rp-address|unicast-routing|multicast-routing|vrf|cef|name-server|domain|name|telnet|source-interface|prefix-list|access-list|standard|extended|http|server|secure-server|route)(?=\s)</string>
 							<key>name</key>
 							<string>keyword.other.ipv6</string>
 						</dict>
@@ -1089,11 +1134,19 @@
 					</dict>
 					<key>end</key>
 					<string>^(!)</string>
+					<key>endCaptures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>comment.documentation.cisco</string>
+						</dict>
+					</dict>
 					<key>patterns</key>
 					<array>
 						<dict>
 							<key>match</key>
-							<string>\s(redirects|proxy-arp|channel-group|active|mls|qos|switchport|trunk|mode|vlan-id|bandwidth|ipv6|access-group|in|out|verify|unicast|source|destination|reachable-via|tx|rx|dead-interval|hello-interval|flow|policy|route-map|tunnel|tcp|adjust-mss|ingress|cost|allow-default|allow-self-ping|unreachables|lacp|fast-switchover|inside|outside|ip|vrf|forwarding|mtu|address|cdp|enable|encapsulation|speed|duplex|media-type|load-interval|nat|unnumbered|service-module|default-gateway|virtual-reassembly|crypto|map|service-policy|mpls|pim|ospf|rip|clns|negotiation|output|input|dsu|framing|cablelength|crc|clock|down-when-looped|peer|logging|event|trust|neighbor-route)(?=\s)</string>
+							<string>\s(serial|nd|ra|router||lifetime|interval|router-preference|prefix|managed-config-flag|dhcp|server|restart-delay|path-mtu-discovery|fair-queue|route-cache|ppp|encrypt|authentication|multilink|group|native|redirects|proxy-arp|channel-group|active|mls|qos|switchport|trunk|mode|vlan-id|bandwidth|ipv6|access-group|in|out|verify|unicast|source|destination|reachable-via|tx|rx|dead-interval|hello-interval|flow|policy|route-map|tunnel|tcp|adjust-mss|ingress|cost|allow-default|allow-self-ping|unreachables|lacp|fast-switchover|inside|outside|ip|vrf|forwarding|mtu|address|cdp|enable|encapsulation|speed|duplex|media-type|load-interval|nat|unnumbered|service-module|default-gateway|virtual-reassembly|crypto|map|service-policy|mpls|pim|ospf|rip|clns|negotiation|output|input|dsu|framing|cablelength|crc|clock|down-when-looped|peer|logging|event|trust|neighbor-route)(?=\s)</string>
 							<key>name</key>
 							<string>keyword.other.interface</string>
 						</dict>
@@ -1127,7 +1180,7 @@
 			<array>
 				<dict>
 					<key>match</key>
-					<string>\b((Fast|Gigabit|TenGigabit)?Ethernet|Vlan|Dialer|Serial|Service-Engine|Dot11Radio|ATM|BRI|Tunnel(Group-)?Async|BVI|Loopback|Null|Port-channel|Virtual-(Access|Dot11Radio|PPP|Template))((\d+[\.:/])*)?\d+\b</string>
+					<string>\b((Fast|Gigabit|TenGigabit)?Ethernet|Vlan|Dialer|Serial|Service-Engine|Dot11Radio|ATM|BRI|Tunnel(Group-)?|Async|BVI|Loopback|Null|Port-channel|Dot11Radio|PPP|Virtual-Template|Multilink)((\d+[\.:/])*)?\d+\b</string>
 					<key>name</key>
 					<string>constant.character.interface.cisco</string>
 				</dict>
@@ -1154,7 +1207,7 @@
 						</dict>
 					</dict>
 					<key>end</key>
-					<string>^(?=\w)</string>
+					<string>^(?=\w|!)</string>
 					<key>patterns</key>
 					<array>
 						<dict>
@@ -1162,12 +1215,6 @@
 							<string>\s(permit|deny|udp|tcp|ip|eq|any|range|host|access-list|extended|standard)(?=\s)</string>
 							<key>name</key>
 							<string>keyword.other.acl</string>
-						</dict>
-						<dict>
-							<key>match</key>
-							<string>^ip</string>
-							<key>name</key>
-							<string>constant.language.cisco</string>
 						</dict>
 						<dict>
 							<key>include</key>
@@ -1203,15 +1250,20 @@
 			<array>
 				<dict>
 					<key>begin</key>
-					<string>^(ip)\s(nat)(?=\s)</string>
+					<string>^(no )*(ip)\s(nat)(?=\s)</string>
 					<key>beginCaptures</key>
 					<dict>
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>constant.language.cisco</string>
+							<string>keyword.negative.cisco</string>
 						</dict>
 						<key>2</key>
+						<dict>
+							<key>name</key>
+							<string>constant.language.cisco</string>
+						</dict>
+						<key>3</key>
 						<dict>
 							<key>name</key>
 							<string>keyword.other.nat</string>
@@ -1223,7 +1275,7 @@
 					<array>
 						<dict>
 							<key>match</key>
-							<string>(interface|overload|list|inside|outside|route-map|source|destination)\s</string>
+							<string>(port|translation|timeout|service|pool|static|tcp-timeout|udp-timeout|interface|overload|list|inside|outside|route-map|source|destination)\s</string>
 							<key>name</key>
 							<string>keyword.other.nat</string>
 						</dict>
@@ -1346,7 +1398,7 @@
 					<array>
 						<dict>
 							<key>match</key>
-							<string>(con|aux|vty|location|password|login|transport|input|output|privilege|level|access-class|exec|activation-character|stopbits|baud)\s</string>
+							<string>(con|aux|vty|location|exec-timeout|logging|preferred|password|login|transport|input|output|privilege|level|access-class|exec|activation-character|stopbits|baud)\s</string>
 							<key>name</key>
 							<string>keyword.other.line</string>
 						</dict>
@@ -1751,7 +1803,7 @@
 					<array>
 						<dict>
 							<key>match</key>
-							<string>\s(permit|deny|match|set|ip|next-hop|as-path|prefix-list|community|local-preference|address|dscp)(?=\s)</string>
+							<string>\s(permit|deny|match|set|ip|next-hop|tag|additive|as-path|prefix-list|community|local-preference|address|dscp)(?=\s)</string>
 							<key>name</key>
 							<string>keyword.other.acl</string>
 						</dict>
@@ -1783,10 +1835,15 @@
 			<array>
 				<dict>
 					<key>begin</key>
-					<string>^(router)(?=\s)</string>
+					<string>^(ipv6\s)?(router)(?=\s)</string>
 					<key>beginCaptures</key>
 					<dict>
 						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>constant.language.cisco</string>
+						</dict>
+						<key>2</key>
 						<dict>
 							<key>name</key>
 							<string>constant.language.cisco</string>
@@ -1806,13 +1863,13 @@
 					<array>
 						<dict>
 							<key>match</key>
-							<string>\s(bgp|ospf|isis|rip|eigrp|router-id|graceful-restart|restart-time|metric-type|subnets|stalepath-time|version|ipv4|ipv6|vpnv4|vrf|remote-as|update-source|neighbor|redistribute|auto-summary|activate|send-community|synchronization|log-neighbor-changes|net|area|network|log-adjacency-changes)(?=\s)</string>
+							<string>\s(bgp|ospf|isis|rip|eigrp|metric-style|multi-topology|asnotation|route-reflector-client|router-id|inherit|summary-only|mask|route-map|aggregate-address|peer-policy|peer-session|next-hop-self|default|ipv4-unicast|graceful-restart|restart-time|metric-type|subnets|stalepath-time|version|ipv4|ipv6|vpnv4|vrf|remote-as|update-source|neighbor|redistribute|auto-summary|activate|send-community|synchronization|log-neighbor-changes|net|area|network|log-adjacency-changes)(?=\s)</string>
 							<key>name</key>
 							<string>keyword.other.archive</string>
 						</dict>
 						<dict>
 							<key>match</key>
-							<string>\s(address-family|exit-address-family)(?=\s)</string>
+							<string>\s(template peer-policy|template peer-session|exit-peer-policy|exit-peer-session|address-family|exit-address-family)(?=\s)</string>
 							<key>name</key>
 							<string>constant.language.cisco</string>
 						</dict>
@@ -2099,7 +2156,7 @@
 					<array>
 						<dict>
 							<key>match</key>
-							<string>(secret|privilege)\s</string>
+							<string>(password|secret|privilege)\s</string>
 							<key>name</key>
 							<string>keyword.other.clock</string>
 						</dict>
